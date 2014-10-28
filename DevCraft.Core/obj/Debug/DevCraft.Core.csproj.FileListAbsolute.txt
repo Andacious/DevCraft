@@ -1,7 +1,0 @@
-C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft.Core\obj\Debug\DevCraft.Core.Resources.resources
-C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft.Core\obj\Debug\DevCraft.Core.csproj.GenerateResource.Cache
-C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft.Core\bin\Debug\DevCraft.Core.dll
-C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft.Core\bin\Debug\DevCraft.Core.pdb
-C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft.Core\obj\Debug\DevCraft.Core.dll
-C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft.Core\obj\Debug\DevCraft.Core.pdb
-C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft.Core\obj\Debug\DevCraft.Core.csprojResolveAssemblyReference.cache
