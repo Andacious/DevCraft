@@ -1,0 +1,16 @@
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.csprojResolveAssemblyReference.cache
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.csproj.GenerateResource.Cache
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\bin\Debug\DevCraft.Core.dll
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\bin\Debug\DevCraft.Core.pdb
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\bin\Debug\DevCraft.UI.exe.config
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\bin\Debug\DevCraft.UI.exe.manifest
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\bin\Debug\DevCraft.UI.application
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\bin\Debug\DevCraft.UI.exe
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\bin\Debug\DevCraft.UI.pdb
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.Forms.BackupScheduleWindow.resources
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.Forms.MainWindow.resources
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.exe.manifest
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.application
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.exe
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.pdb
+C:\Users\Andy\Desktop\Projects\trunk\DevCraft\DevCraft\obj\x86\Debug\DevCraft.UI.Forms.ServerPropertiesWindow.resources
