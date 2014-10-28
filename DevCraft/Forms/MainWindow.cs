@@ -1,48 +1,29 @@
-﻿using System;
+﻿using DevCraft.Core;
+using DevCraft.Core.Logic;
+using DevCraft.UI.Properties;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Timers;
 using System.Windows.Forms;
-using DevCraft.Core;
-using DevCraft.Core.Logic;
-using DevCraft.UI.Properties;
-using Timer = System.Timers.Timer;
 
 namespace DevCraft.UI.Forms
 {
     public partial class MainWindow : Form
     {
-        public static Timer scheduledBackup;
-
         delegate void SetTextCallback(string text);
 
-        private string _serverFolder;
-        private string _backupFolder;
-
-        private bool ServerDirChosen
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(_serverFolder);
-            }
-        }
-
-        private bool BackupDirChosen
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(_backupFolder);
-            }
-        }
+        private readonly BackupManager _backupManager;
 
         private IServerInstance _server;
-        private BackupScheduleWindow bs;
+        private BackupScheduleWindow _bs;
+        private string _serverFolder;
+        private string _backupFolder;
 
         public MainWindow()
         {
             InitializeComponent();
-            scheduledBackup = new Timer();
+
             // Set saved server directory if it contains minecraft_server.jar
             if (!string.IsNullOrWhiteSpace(Settings.Default.ServerDirectory))
             {
@@ -61,8 +42,9 @@ namespace DevCraft.UI.Forms
             }
 
             // Set events
-            scheduledBackup.Elapsed += scheduledBackup_Elapsed;
-            FormClosing += DevCraft_GUI_FormClosing;
+            FormClosing += MainWindow_FormClosing;
+
+            _backupManager = new BackupManager();
         }
 
         private void SetText(string text)
@@ -132,14 +114,6 @@ namespace DevCraft.UI.Forms
             serverName.Text = string.Empty;
         }
 
-        private void BackupWorld()
-        {
-            if (null != _server && _server.IsRunning)
-            {
-                BackupManager.Backup(_server);
-            }
-        }
-
         private void sDirButton_Click(Object sender, EventArgs e)
         {
             bool validServerFolder = false;
@@ -187,17 +161,10 @@ namespace DevCraft.UI.Forms
             }
         }
 
-        private void scheduledBackup_Elapsed(Object source, ElapsedEventArgs e)
-        {
-            BackupWorld();
-
-            //// TODO: new logic to fire every 10 seconds and check the time/date/interval
-        }
-
         private void backupScheduleToolStripMenuItem_Click(Object sender, EventArgs e)
         {
-            bs = new BackupScheduleWindow(_server);
-            bs.ShowDialog();
+            _bs = new BackupScheduleWindow(_server, _backupManager);
+            _bs.ShowDialog();
         }
 
         private void restartServerToolStripMenuItem_Click(Object sender, EventArgs e)
@@ -208,7 +175,7 @@ namespace DevCraft.UI.Forms
 
         private void startServerToolStripMenuItem_Click(Object sender, EventArgs e)
         {
-            if (ServerDirChosen && BackupDirChosen)
+            if (!string.IsNullOrEmpty(_serverFolder) && !string.IsNullOrEmpty(_backupFolder))
             {
                 StartServer();
             }
@@ -223,7 +190,7 @@ namespace DevCraft.UI.Forms
             StopServer();
         }
 
-        private void DevCraft_GUI_FormClosing(Object sender, FormClosingEventArgs e)
+        private void MainWindow_FormClosing(Object sender, FormClosingEventArgs e)
         {
             if (_server != null && _server.IsRunning)
             {
@@ -247,12 +214,12 @@ namespace DevCraft.UI.Forms
 
         private void removeOldBackupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BackupManager.RemoveOldBackups(_backupFolder, 1);
+            _backupManager.RemoveOldBackups(_backupFolder, 1);
         }
 
         private void forceBackupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BackupManager.Backup(_server);
+            _backupManager.Backup(_server);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

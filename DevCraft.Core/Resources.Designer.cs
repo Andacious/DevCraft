@@ -79,6 +79,15 @@ namespace DevCraft.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid input.
+        /// </summary>
+        public static string ErrorInvalidInput {
+            get {
+                return ResourceManager.GetString("ErrorInvalidInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server folder was null, empty, or whitespace and should point to an actual directory..
         /// </summary>
         public static string ErrorPropertiesFolder {

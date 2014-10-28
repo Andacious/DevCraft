@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using DevCraft.Core;
 using DevCraft.Core.Logic;
 using DevCraft.Core.Objects;
 using DevCraft.Core.Schedules;
@@ -10,12 +11,14 @@ namespace DevCraft.UI.Forms
     public partial class BackupScheduleWindow : Form
     {
         private readonly IServerInstance _minecraft;
+        private readonly BackupManager _backupManager;
 
-        internal BackupScheduleWindow(IServerInstance minecraft)
+        public BackupScheduleWindow(IServerInstance minecraft, BackupManager backupManager)
         {
             InitializeComponent();
 
             _minecraft = minecraft;
+            _backupManager = backupManager;
 
             // set contents of drop down lists
             ddFrequency.DataSource = Enum.GetValues(typeof(Frequency));
@@ -35,7 +38,7 @@ namespace DevCraft.UI.Forms
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            BackupManager.InitializeBackups(BuildScheduleFromControls(), _minecraft); 
+            _backupManager.InitializeBackups(BuildScheduleFromControls(), _minecraft); 
 
             Close();
         }
@@ -55,7 +58,7 @@ namespace DevCraft.UI.Forms
             }
             else
             {
-                lblErrorLabel.Text = "Invalid input";
+                lblErrorLabel.Text = Resources.ErrorInvalidInput;
                 e.Handled = true;
             }
         }
@@ -65,8 +68,6 @@ namespace DevCraft.UI.Forms
             lblErrorLabel.Text = String.Empty;
             Close();
         }
-
-        #region Control Rendering
 
         private void RenderControls(Frequency freq)
         {
@@ -114,8 +115,6 @@ namespace DevCraft.UI.Forms
             txtCustomInterval.Enabled = enable;
             ddCustomInterval.Enabled = enable;
         }
-
-        #endregion
 
         private ISchedule BuildScheduleFromControls()
         {

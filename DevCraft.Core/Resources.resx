@@ -123,6 +123,9 @@
   <data name="DevCraftOutputPrefix" xml:space="preserve">
     <value>[DevCraft]:</value>
   </data>
+  <data name="ErrorInvalidInput" xml:space="preserve">
+    <value>Invalid input</value>
+  </data>
   <data name="ErrorPropertiesFolder" xml:space="preserve">
     <value>Server folder was null, empty, or whitespace and should point to an actual directory.</value>
   </data>
