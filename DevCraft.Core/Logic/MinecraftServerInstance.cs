@@ -18,6 +18,9 @@ namespace DevCraft.Core.Logic
         private Process _proc;
         private ServerProperties _properties;
 
+        public event DataReceivedEventHandler ServerOutput;
+        public event EventHandler DevCraftOutput;
+
         public string Name
         {
             get
@@ -25,9 +28,6 @@ namespace DevCraft.Core.Logic
                 return _properties["level-name"] ?? string.Empty;
             }
         }
-
-        public event DataReceivedEventHandler ServerOutput;
-        public event EventHandler DevCraftOutput;
 
         public string BackupFolder { get; set; }
 

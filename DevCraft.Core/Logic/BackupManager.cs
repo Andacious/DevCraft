@@ -12,26 +12,18 @@ namespace DevCraft.Core.Logic
 {
     public class BackupManager
     {
-        private static BackupTimer _backupTimer;
+        private BackupTimer _backupTimer;
 
-        private static IServerInstance _server;
+        private IServerInstance _server;
 
-        public static BackupTimer BackupTimer
-        {
-            get
-            {
-                return _backupTimer;
-            }
-        }
-
-        public static void RemoveOldBackups(string backupsPath, double daysToKeep)
+        public void RemoveOldBackups(string backupsPath, double daysToKeep)
         {
             var backupDef = new BackupRemovalDefinition { BackupsPath = backupsPath, DaysToKeep = daysToKeep };
             ThreadPool.SetMaxThreads(2, 0);
             ThreadPool.QueueUserWorkItem(RemoveOldBackups_Worker, backupDef);
         }
 
-        private static void RemoveOldBackups_Worker(object o)
+        private void RemoveOldBackups_Worker(object o)
         {
             var backupDef = (BackupRemovalDefinition)o;
 
@@ -58,9 +50,9 @@ namespace DevCraft.Core.Logic
             }
         }
 
-        public static void Backup(IServerInstance serverInstance)
+        public void Backup(IServerInstance serverInstance)
         {
-            string currentDate = DateTime.Now.ToString("MM.dd.yyyy_hh.mm.ss");
+            string currentDate = DateTime.Now.ToString("MM.dd.yyyy_HH.mm.ss");
             string levelName = serverInstance.Name;
             string backupFolder = serverInstance.BackupFolder;
             string serverFolder = serverInstance.ServerFolder;
@@ -81,7 +73,8 @@ namespace DevCraft.Core.Logic
 
                 string sourceDirectory = Path.Combine(serverFolder, levelName);
 
-                //// Have robocopy do all the heavy lifting :) (if you dont have robocopy, piss off)
+                //// Have robocopy do all the heavy lifting
+                //// TODO: refactor into API call
                 Process robocopy = new Process
                 {
                     StartInfo =
@@ -97,10 +90,6 @@ namespace DevCraft.Core.Logic
                 robocopy.WaitForExit();
                 robocopy.Close();
                 robocopy.Dispose();
-
-                // test compression
-                //CompressionManager.Compress(backupDirectory);
-
 
                 serverInstance.Input(Commands.SaveOn);
                 serverInstance.Display("[DevCraft]: Backup complete.");
@@ -124,7 +113,7 @@ namespace DevCraft.Core.Logic
             }
         }
 
-        public static void InitializeBackups(ISchedule schedule, IServerInstance server)
+        public void InitializeBackups(ISchedule schedule, IServerInstance server)
         {
             _server = server;
 
@@ -139,7 +128,7 @@ namespace DevCraft.Core.Logic
             _backupTimer.Start();
         }
 
-        private static void BackupFired(Object source, ElapsedEventArgs e)
+        private void BackupFired(Object source, ElapsedEventArgs e)
         {
             Backup(_server);
         }
