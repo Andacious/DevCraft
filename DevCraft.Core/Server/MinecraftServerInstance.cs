@@ -14,6 +14,9 @@ namespace DevCraft.Core.Server
         private IProcess _proc;
         private ServerProperties _properties;
 
+        public event DataReceivedEventHandler ServerOutput;
+        public event EventHandler DevCraftOutput;
+
         public string Name
         {
             get
@@ -21,9 +24,6 @@ namespace DevCraft.Core.Server
                 return _properties["level-name"] ?? string.Empty;
             }
         }
-
-        public event DataReceivedEventHandler ServerOutput;
-        public event EventHandler DevCraftOutput;
 
         public string BackupFolder { get; set; }
 

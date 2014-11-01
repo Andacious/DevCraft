@@ -3,9 +3,9 @@ using DevCraft.Core.Server;
 
 namespace DevCraft.UI.Forms
 {
-    internal partial class ServerPropertiesWindow : Form
+    public partial class ServerPropertiesWindow : Form
     {
-        internal ServerPropertiesWindow(string serverFolder)
+        public ServerPropertiesWindow(string serverFolder)
         {
             InitializeComponent();
 
