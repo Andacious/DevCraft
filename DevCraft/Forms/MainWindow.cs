@@ -5,7 +5,8 @@ using System.Reflection;
 using System.Timers;
 using System.Windows.Forms;
 using DevCraft.Core;
-using DevCraft.Core.Logic;
+using DevCraft.Core.Backup;
+using DevCraft.Core.Server;
 using DevCraft.UI.Properties;
 using Timer = System.Timers.Timer;
 

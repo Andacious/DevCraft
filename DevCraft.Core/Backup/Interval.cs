@@ -1,4 +1,4 @@
-﻿namespace DevCraft.Core.Objects
+﻿namespace DevCraft.Core.Backup
 {
     public enum Interval
     {

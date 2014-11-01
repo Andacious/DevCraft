@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 
-namespace DevCraft.Core.Logic
+namespace DevCraft.Core.Server
 {
     public class ServerProperties : NameValueCollection
     {

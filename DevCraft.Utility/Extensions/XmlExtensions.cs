@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 
-namespace DevCraft.Core.Extensions
+namespace DevCraft.Utility.Extensions
 {
     public static class XmlExtensions
     {

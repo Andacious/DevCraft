@@ -1,6 +1,4 @@
-﻿using DevCraft.Core.Objects;
-
-namespace DevCraft.Core.Schedules
+﻿namespace DevCraft.Core.Backup.Schedules
 {
     public interface ISchedule
     {

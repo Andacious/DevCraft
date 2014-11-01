@@ -1,7 +1,6 @@
 ﻿using System;
-using DevCraft.Core.Objects;
 
-namespace DevCraft.Core.Schedules
+namespace DevCraft.Core.Backup.Schedules
 {
     public class CustomSchedule : ISchedule
     {

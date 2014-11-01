@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using DevCraft.Core.Logic;
+using DevCraft.Core.Server;
 
 namespace DevCraft.UI.Forms
 {

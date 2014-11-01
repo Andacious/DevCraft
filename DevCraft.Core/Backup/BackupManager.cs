@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using DevCraft.Core.Backup.Schedules;
+using DevCraft.Core.Server;
+using DevCraft.Utility;
+using System;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Timers;
-using DevCraft.Core.Objects;
-using DevCraft.Core.Schedules;
 
-namespace DevCraft.Core.Logic
+namespace DevCraft.Core.Backup
 {
     public class BackupManager
     {
+        // TODO: remove static instances
         private static BackupTimer _backupTimer;
-
         private static IServerInstance _server;
-
-        public static BackupTimer BackupTimer
-        {
-            get
-            {
-                return _backupTimer;
-            }
-        }
 
         public static void RemoveOldBackups(string backupsPath, double daysToKeep)
         {
@@ -34,33 +24,14 @@ namespace DevCraft.Core.Logic
         private static void RemoveOldBackups_Worker(object o)
         {
             var backupDef = (BackupRemovalDefinition)o;
+            var daysToKeep = DateTime.Now.Subtract(TimeSpan.FromDays(backupDef.DaysToKeep));
 
-            string backupsPath = backupDef.BackupsPath;
-            double daysToKeep = backupDef.DaysToKeep;
-
-            if (!Directory.Exists(backupsPath))
-            {
-                return;
-            }
-
-            List<string> directories = Directory.GetDirectories(backupsPath, "*", SearchOption.TopDirectoryOnly).ToList();
-
-            DateTime minDateAllowed = DateTime.Now.Subtract(TimeSpan.FromDays(daysToKeep));
-
-            foreach (string d in directories)
-            {
-                DateTime creationDate = Directory.GetCreationTime(d);
-
-                if (creationDate < minDateAllowed)
-                {
-                    Directory.Delete(d, true);
-                }
-            }
+            DirectoryHelper.DeleteBefore(backupDef.BackupsPath, daysToKeep);
         }
 
         public static void Backup(IServerInstance serverInstance)
         {
-            string currentDate = DateTime.Now.ToString("MM.dd.yyyy_hh.mm.ss");
+            string currentDate = DateTime.Now.ToString("MM.dd.yyyy_HH.mm.ss");
             string levelName = serverInstance.Name;
             string backupFolder = serverInstance.BackupFolder;
             string serverFolder = serverInstance.ServerFolder;
@@ -71,43 +42,17 @@ namespace DevCraft.Core.Logic
                 serverInstance.Input(Commands.SaveAll);
                 serverInstance.Input(Commands.SaveOff);
 
-                if (!Directory.Exists(backupFolder))
-                {
-                    Directory.CreateDirectory(backupFolder);
-                }
-
-                string backupDirectory = Path.Combine(backupFolder, levelName + " - " + currentDate);
-                Directory.CreateDirectory(backupDirectory);
-
                 string sourceDirectory = Path.Combine(serverFolder, levelName);
+                string backupDirectory = Path.Combine(backupFolder, levelName + " - " + currentDate);
 
-                //// Have robocopy do all the heavy lifting :) (if you dont have robocopy, piss off)
-                Process robocopy = new Process
-                {
-                    StartInfo =
-                    {
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        FileName = "Robocopy.exe",
-                        Arguments = String.Format("\"{0}\" \"{1}\" /MIR", sourceDirectory, backupDirectory)
-                    }
-                };
-
-                robocopy.Start();
-                robocopy.WaitForExit();
-                robocopy.Close();
-                robocopy.Dispose();
-
-                // test compression
-                //CompressionManager.Compress(backupDirectory);
-
+                DirectoryHelper.Mirror(sourceDirectory, backupDirectory);
 
                 serverInstance.Input(Commands.SaveOn);
                 serverInstance.Display("[DevCraft]: Backup complete.");
             }
             catch (Exception ex)
             {
-                // thats right...a nested try catch. I'll figure out the actual exceptions later, thank you...
+                // TODO: lordy this is bad
                 try
                 {
                     serverInstance.Input(Commands.SaveOn);

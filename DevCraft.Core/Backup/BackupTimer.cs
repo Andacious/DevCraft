@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Timers;
 
-namespace DevCraft.Core.Objects
+namespace DevCraft.Core.Backup
 {
     public sealed class BackupTimer : IDisposable
     {

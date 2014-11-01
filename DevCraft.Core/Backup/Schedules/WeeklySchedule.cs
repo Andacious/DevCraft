@@ -1,11 +1,10 @@
 ﻿using System;
-using DevCraft.Core.Objects;
 
-namespace DevCraft.Core.Schedules
+namespace DevCraft.Core.Backup.Schedules
 {
-    public class DailySchedule : ISchedule
+    public class WeeklySchedule : ISchedule
     {
-        private const Frequency _freq = Frequency.Daily;
+        private const Frequency _freq = Frequency.Weekly;
         public Frequency Freq
         {
             get
@@ -15,6 +14,12 @@ namespace DevCraft.Core.Schedules
         }
 
         public DateTime Time
+        {
+            get;
+            set;
+        }
+
+        public Day Day
         {
             get;
             set;

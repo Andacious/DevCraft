@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace DevCraft.Core.Logic
+namespace DevCraft.Core.Server
 {
     public interface IServerInstance
     {

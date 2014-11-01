@@ -1,6 +1,6 @@
 ﻿//using System;
 
-//namespace DevCraft
+//namespace DevCraft.Core.Backup
 //{
 //    public class Schedule
 //    {

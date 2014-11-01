@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using DevCraft.Core.Logic;
-using DevCraft.Core.Objects;
-using DevCraft.Core.Schedules;
-using Day = DevCraft.Core.Objects.Day;
+using DevCraft.Core.Backup;
+using DevCraft.Core.Backup.Schedules;
+using DevCraft.Core.Server;
+using Day = DevCraft.Core.Backup.Day;
 
 namespace DevCraft.UI.Forms
 {
