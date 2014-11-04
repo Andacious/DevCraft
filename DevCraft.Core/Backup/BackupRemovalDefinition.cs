@@ -1,9 +1,8 @@
 ﻿namespace DevCraft.Core.Backup
 {
-    class BackupRemovalDefinition
+    public class BackupRemovalDefinition
     {
-        internal string BackupsPath { get; set; }
-
-        internal double DaysToKeep { get; set; }
+        public string BackupsPath { get; set; }
+        public double DaysToKeep { get; set; }
     }
 }

@@ -2,11 +2,7 @@
 {
     public interface ISchedule
     {
-        Frequency Freq
-        {
-            get;
-        }
-
+        Frequency Freq { get; }
         double GetInterval(out double offset);
     }
 }

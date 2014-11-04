@@ -4,20 +4,15 @@ namespace DevCraft.Core.Backup.Schedules
 {
     public class DailySchedule : ISchedule
     {
-        private const Frequency _freq = Frequency.Daily;
         public Frequency Freq
         {
             get
             {
-                return _freq;
+                return Frequency.Daily;
             }
         }
 
-        public DateTime Time
-        {
-            get;
-            set;
-        }
+        public DateTime Time { get; set; }
 
         public double GetInterval(out double offset)
         {
