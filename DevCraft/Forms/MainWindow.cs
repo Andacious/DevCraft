@@ -2,24 +2,21 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Timers;
 using System.Windows.Forms;
 using DevCraft.Core;
 using DevCraft.Core.Backup;
 using DevCraft.Core.Server;
 using DevCraft.UI.Properties;
-using Timer = System.Timers.Timer;
 
 namespace DevCraft.UI.Forms
 {
     public partial class MainWindow : Form
     {
-        public static Timer scheduledBackup;
-
         delegate void SetTextCallback(string text);
 
         private string _serverFolder;
         private string _backupFolder;
+        private IServerInstance _server;
 
         private bool ServerDirChosen
         {
@@ -37,13 +34,10 @@ namespace DevCraft.UI.Forms
             }
         }
 
-        private IServerInstance _server;
-        private BackupScheduleWindow bs;
-
         public MainWindow()
         {
             InitializeComponent();
-            scheduledBackup = new Timer();
+
             // Set saved server directory if it contains minecraft_server.jar
             if (!string.IsNullOrWhiteSpace(Settings.Default.ServerDirectory))
             {
@@ -62,7 +56,6 @@ namespace DevCraft.UI.Forms
             }
 
             // Set events
-            scheduledBackup.Elapsed += scheduledBackup_Elapsed;
             FormClosing += DevCraft_GUI_FormClosing;
         }
 
@@ -80,13 +73,13 @@ namespace DevCraft.UI.Forms
         }
 
         // Collect the command output.
-        private void OutputHandler(Object sender, DataReceivedEventArgs outLine)
+        private void OutputHandler(object sender, DataReceivedEventArgs outLine)
         {
             SetText(outLine.Data);
         }
 
         // collect devcraft output
-        private void DevCraftOutputHandler(Object sender, EventArgs e)
+        private void DevCraftOutputHandler(object sender, EventArgs e)
         {
             if (null != sender)
             {
@@ -94,7 +87,7 @@ namespace DevCraft.UI.Forms
             }
         }
 
-        private void sendCommand_Click(Object sender, EventArgs e)
+        private void sendCommand_Click(object sender, EventArgs e)
         {
             string input = inputBox.Text;
 
@@ -133,15 +126,7 @@ namespace DevCraft.UI.Forms
             serverName.Text = string.Empty;
         }
 
-        private void BackupWorld()
-        {
-            if (null != _server && _server.IsRunning)
-            {
-                BackupManager.Backup(_server);
-            }
-        }
-
-        private void sDirButton_Click(Object sender, EventArgs e)
+        private void sDirButton_Click(object sender, EventArgs e)
         {
             bool validServerFolder = false;
 
@@ -174,11 +159,11 @@ namespace DevCraft.UI.Forms
             } while (!validServerFolder);
         }
 
-        private void bDirButton_Click(Object sender, EventArgs e)
+        private void bDirButton_Click(object sender, EventArgs e)
         {
             generalDirBrowser.Description = Resources.MinecraftMapBackupDirectory;
-
             DialogResult result = generalDirBrowser.ShowDialog();
+
             if (result == DialogResult.OK)
             {
                 _backupFolder = generalDirBrowser.SelectedPath;
@@ -188,26 +173,18 @@ namespace DevCraft.UI.Forms
             }
         }
 
-        private void scheduledBackup_Elapsed(Object source, ElapsedEventArgs e)
+        private void backupScheduleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BackupWorld();
-
-            //// TODO: new logic to fire every 10 seconds and check the time/date/interval
+            new BackupScheduleWindow(_server).Show();
         }
 
-        private void backupScheduleToolStripMenuItem_Click(Object sender, EventArgs e)
-        {
-            bs = new BackupScheduleWindow(_server);
-            bs.ShowDialog();
-        }
-
-        private void restartServerToolStripMenuItem_Click(Object sender, EventArgs e)
+        private void restartServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             StopServer();
             StartServer();
         }
 
-        private void startServerToolStripMenuItem_Click(Object sender, EventArgs e)
+        private void startServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ServerDirChosen && BackupDirChosen)
             {
@@ -217,33 +194,6 @@ namespace DevCraft.UI.Forms
             {
                 SetText("[DevCraft]: Cannot start Minecraft server:\r\n[DevCraft]: You must choose the location of your minecraft_server.jar and a location that you would like to backup your Minecraft worlds to.");
             }
-        }
-
-        private void stopServerToolStripMenuItem_Click(Object sender, EventArgs e)
-        {
-            StopServer();
-        }
-
-        private void DevCraft_GUI_FormClosing(Object sender, FormClosingEventArgs e)
-        {
-            if (_server != null && _server.IsRunning)
-            {
-                if (MessageBox.Show(Resources.SafelyCloseContinue, Resources.ConfirmClose, MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    e.Cancel = false;
-                    StopServer();
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
-        }
-
-        private void serverOptionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ServerPropertiesWindow mp = new ServerPropertiesWindow(_serverFolder);
-            mp.ShowDialog();
         }
 
         private void removeOldBackupsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -258,7 +208,48 @@ namespace DevCraft.UI.Forms
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(string.Format("DevCraft {0}\r\nCopyright © 2012 - 2014 Andrew Ladwig", Assembly.GetExecutingAssembly().GetName().Version), "About");
+            MessageBox.Show(string.Format("DevCraft {0}\r\nCopyright © 2011 - 2014 Andrew Ladwig", Assembly.GetExecutingAssembly().GetName().Version), "About");
+        }
+
+        private void stopServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StopServer();
+        }
+
+        private void DevCraft_GUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = !SafeExit();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private bool SafeExit()
+        {
+            bool stopped = false;
+
+            if (_server != null && _server.IsRunning)
+            {
+                if (MessageBox.Show(Resources.SafelyCloseContinue, Resources.ConfirmClose, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    StopServer();
+                    stopped = true;
+                }
+            }
+            else
+            {
+                stopped = true;
+            }
+
+            return stopped;
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ServerPropertiesWindow mp = new ServerPropertiesWindow(_serverFolder);
+            mp.ShowDialog();
         }
     }
 }

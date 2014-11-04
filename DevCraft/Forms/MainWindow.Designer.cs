@@ -40,17 +40,20 @@
             this.bDirLabel = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.startServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backupScheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serverOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeOldBackupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.forceBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serverName = new System.Windows.Forms.Label();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.serverName = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -153,46 +156,73 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(0);
-            this.menuStrip1.Size = new System.Drawing.Size(247, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(155, 24);
             this.menuStrip1.TabIndex = 11;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripSeparator2,
             this.startServerToolStripMenuItem,
             this.restartServerToolStripMenuItem,
-            this.stopServerToolStripMenuItem});
+            this.stopServerToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
             this.fileToolStripMenuItem.Text = "Server";
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Text = "Properties...";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            // 
             // startServerToolStripMenuItem
             // 
             this.startServerToolStripMenuItem.Name = "startServerToolStripMenuItem";
-            this.startServerToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.startServerToolStripMenuItem.Text = "Start Server";
+            this.startServerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.startServerToolStripMenuItem.Text = "Start";
             this.startServerToolStripMenuItem.Click += new System.EventHandler(this.startServerToolStripMenuItem_Click);
             // 
             // restartServerToolStripMenuItem
             // 
             this.restartServerToolStripMenuItem.Name = "restartServerToolStripMenuItem";
-            this.restartServerToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.restartServerToolStripMenuItem.Text = "Restart Server";
+            this.restartServerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.restartServerToolStripMenuItem.Text = "Restart";
             this.restartServerToolStripMenuItem.Click += new System.EventHandler(this.restartServerToolStripMenuItem_Click);
             // 
             // stopServerToolStripMenuItem
             // 
             this.stopServerToolStripMenuItem.Name = "stopServerToolStripMenuItem";
-            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.stopServerToolStripMenuItem.Text = "Stop Server";
+            this.stopServerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.stopServerToolStripMenuItem.Text = "Stop";
             this.stopServerToolStripMenuItem.Click += new System.EventHandler(this.stopServerToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.backupScheduleToolStripMenuItem,
-            this.serverOptionsToolStripMenuItem,
             this.removeOldBackupsToolStripMenuItem,
             this.forceBackupToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -203,15 +233,8 @@
             // 
             this.backupScheduleToolStripMenuItem.Name = "backupScheduleToolStripMenuItem";
             this.backupScheduleToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.backupScheduleToolStripMenuItem.Text = "Backup Schedule";
+            this.backupScheduleToolStripMenuItem.Text = "Schedule...";
             this.backupScheduleToolStripMenuItem.Click += new System.EventHandler(this.backupScheduleToolStripMenuItem_Click);
-            // 
-            // serverOptionsToolStripMenuItem
-            // 
-            this.serverOptionsToolStripMenuItem.Name = "serverOptionsToolStripMenuItem";
-            this.serverOptionsToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.serverOptionsToolStripMenuItem.Text = "Server Properties";
-            this.serverOptionsToolStripMenuItem.Click += new System.EventHandler(this.serverOptionsToolStripMenuItem_Click);
             // 
             // removeOldBackupsToolStripMenuItem
             // 
@@ -227,16 +250,6 @@
             this.forceBackupToolStripMenuItem.Text = "Force Backup";
             this.forceBackupToolStripMenuItem.Click += new System.EventHandler(this.forceBackupToolStripMenuItem_Click);
             // 
-            // serverName
-            // 
-            this.serverName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.serverName.ForeColor = System.Drawing.Color.ForestGreen;
-            this.serverName.Location = new System.Drawing.Point(526, 7);
-            this.serverName.Name = "serverName";
-            this.serverName.Size = new System.Drawing.Size(207, 13);
-            this.serverName.TabIndex = 12;
-            this.serverName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -251,6 +264,16 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // serverName
+            // 
+            this.serverName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.serverName.ForeColor = System.Drawing.Color.ForestGreen;
+            this.serverName.Location = new System.Drawing.Point(526, 7);
+            this.serverName.Name = "serverName";
+            this.serverName.Size = new System.Drawing.Size(207, 13);
+            this.serverName.TabIndex = 12;
+            this.serverName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MainWindow
             // 
@@ -296,14 +319,17 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backupScheduleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restartServerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem serverOptionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem startServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopServerToolStripMenuItem;
         private System.Windows.Forms.Label serverName;
         private System.Windows.Forms.ToolStripMenuItem removeOldBackupsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forceBackupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem startServerToolStripMenuItem;
     }
 }
 

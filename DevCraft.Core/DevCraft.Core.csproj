@@ -42,7 +42,7 @@
     <Compile Include="Server\MinecraftServerInstance.cs" />
     <Compile Include="Server\ServerProperties.cs" />
     <Compile Include="Backup\BackupRemovalDefinition.cs" />
-    <Compile Include="Backup\BackupTimer.cs" />
+    <Compile Include="Backup\DelayedTimer.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Backup\Day.cs" />
     <Compile Include="Backup\Frequency.cs" />

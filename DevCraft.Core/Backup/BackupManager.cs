@@ -11,7 +11,7 @@ namespace DevCraft.Core.Backup
     public class BackupManager
     {
         // TODO: remove static instances
-        private static BackupTimer _backupTimer;
+        private static DelayedTimer _backupTimer;
         private static IServerInstance _server;
 
         public static void RemoveOldBackups(string backupsPath, double daysToKeep)
@@ -31,8 +31,15 @@ namespace DevCraft.Core.Backup
 
         public static void Backup(IServerInstance serverInstance)
         {
+            if (serverInstance == null
+                || serverInstance.BackupFolder == null
+                || serverInstance.ServerFolder == null)
+            {
+                return;
+            }
+
             string currentDate = DateTime.Now.ToString("MM.dd.yyyy_HH.mm.ss");
-            string levelName = serverInstance.Name;
+            string levelName = serverInstance.Name ?? string.Empty;
             string backupFolder = serverInstance.BackupFolder;
             string serverFolder = serverInstance.ServerFolder;
 
@@ -77,9 +84,9 @@ namespace DevCraft.Core.Backup
 
             double backupInterval = schedule.GetInterval(out offset);
 
-            _backupTimer = new BackupTimer(offset, backupInterval);
+            _backupTimer = new DelayedTimer(offset, backupInterval);
 
-            _backupTimer.FireBackup += BackupFired;
+            _backupTimer.Elapsed += BackupFired;
 
             _backupTimer.Start();
         }
