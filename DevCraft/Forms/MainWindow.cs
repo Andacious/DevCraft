@@ -198,12 +198,12 @@ namespace DevCraft.UI.Forms
 
         private void removeOldBackupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BackupManager.RemoveOldBackups(_backupFolder, 1);
+            new BackupManager(_server).RemoveOldBackups(_backupFolder, 1);
         }
 
         private void forceBackupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BackupManager.Backup(_server);
+            new BackupManager(_server).Backup();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

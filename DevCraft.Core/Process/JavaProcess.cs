@@ -1,3 +1,5 @@
+using System;
+
 namespace DevCraft.Core.Process
 {
     public class JavaProcess : ProcessBase
@@ -7,6 +9,8 @@ namespace DevCraft.Core.Process
         public JavaProcess(string jarName, string workingDirectory)
             : base("java.exe", workingDirectory)
         {
+            if (string.IsNullOrWhiteSpace(jarName)) throw new ArgumentException(string.Format("JAR Name is not valid: {0}", jarName));
+
             _jarName = jarName;
         }
 

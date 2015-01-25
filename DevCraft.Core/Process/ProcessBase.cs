@@ -27,6 +27,10 @@ namespace DevCraft.Core.Process
 
         protected ProcessBase(string executable, string workingDirectory)
         {
+            if (string.IsNullOrWhiteSpace(executable)) throw new ArgumentException(string.Format("Invalid executable name: {0}", executable));
+            if (string.IsNullOrWhiteSpace(workingDirectory)) throw new ArgumentException(string.Format("Invalid working directory: {0}", workingDirectory));
+            if (!Directory.Exists(workingDirectory)) throw new DirectoryNotFoundException(string.Format("Working directory not found: {0}", workingDirectory));
+
             _executable = executable;
             _workingDirectory = workingDirectory;
         }
@@ -92,7 +96,10 @@ namespace DevCraft.Core.Process
         /// <param name="sender">The sender of the event</param>
         protected void OnExited(object sender)
         {
-            Exited(sender, EventArgs.Empty);
+            if (Exited != null)
+            {
+                Exited(sender, EventArgs.Empty);
+            }
         }
 
         private void InternalExitHandler(object sender, EventArgs args)

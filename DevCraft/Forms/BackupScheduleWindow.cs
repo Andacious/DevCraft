@@ -35,7 +35,7 @@ namespace DevCraft.UI.Forms
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            BackupManager.InitializeBackups(BuildScheduleFromControls(), _minecraft); 
+            new BackupManager(_minecraft).InitializeBackups(BuildScheduleFromControls()); 
 
             Close();
         }

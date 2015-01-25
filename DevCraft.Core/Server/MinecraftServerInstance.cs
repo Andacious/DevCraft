@@ -36,7 +36,7 @@ namespace DevCraft.Core.Server
         {
             get
             {
-                return null != _proc;
+                return _proc != null;
             }
         }
 
@@ -54,7 +54,12 @@ namespace DevCraft.Core.Server
 
         public bool Input(string input)
         {
-            return _proc.Input(input);
+            if (IsRunning)
+            {
+                return _proc.Input(input);
+            }
+
+            return false;
         }
 
         public void Display(string input)

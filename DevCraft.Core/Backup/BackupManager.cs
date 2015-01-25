@@ -8,67 +8,66 @@ using System.Timers;
 
 namespace DevCraft.Core.Backup
 {
-    public class BackupManager
+    public sealed class BackupManager
     {
-        // TODO: remove static instances
-        private static DelayedTimer _backupTimer;
-        private static IServerInstance _server;
+        private readonly IServerInstance _server;
+        
+        private DelayedTimer _backupTimer;
 
-        public static void RemoveOldBackups(string backupsPath, double daysToKeep)
+        public event EventHandler BackupStarting;
+        public event EventHandler BackupCompleted;
+        public event EventHandler BackupFailed;
+
+        public BackupManager(IServerInstance server)
+        {
+            if (server == null) throw new ArgumentNullException("server");
+
+            _server = server;
+        }
+
+        public void RemoveOldBackups(string backupsPath, double daysToKeep)
         {
             var backupDef = new BackupRemovalDefinition { BackupsPath = backupsPath, DaysToKeep = daysToKeep };
-            ThreadPool.SetMaxThreads(2, 0);
+
             ThreadPool.QueueUserWorkItem(RemoveOldBackups_Worker, backupDef);
         }
 
-        private static void RemoveOldBackups_Worker(object o)
+        public void Backup()
         {
-            var backupDef = (BackupRemovalDefinition)o;
-            var daysToKeep = DateTime.Now.Subtract(TimeSpan.FromDays(backupDef.DaysToKeep));
-
-            DirectoryHelper.DeleteBefore(backupDef.BackupsPath, daysToKeep);
-        }
-
-        public static void Backup(IServerInstance serverInstance)
-        {
-            if (serverInstance == null
-                || serverInstance.BackupFolder == null
-                || serverInstance.ServerFolder == null)
+            if (_server == null
+                || _server.BackupFolder == null
+                || _server.ServerFolder == null)
             {
                 return;
             }
 
             string currentDate = DateTime.Now.ToString("MM.dd.yyyy_HH.mm.ss");
-            string levelName = serverInstance.Name ?? string.Empty;
-            string backupFolder = serverInstance.BackupFolder;
-            string serverFolder = serverInstance.ServerFolder;
+            string levelName = _server.Name ?? string.Empty;
+            string backupFolder = _server.BackupFolder;
+            string serverFolder = _server.ServerFolder;
 
             try
             {
-                serverInstance.Display("[DevCraft]: Performing map backup...");
-                serverInstance.Input(Commands.SaveAll);
-                serverInstance.Input(Commands.SaveOff);
+                //_server.Display("[DevCraft]: Performing map backup...");
+                OnBackupStarting(EventArgs.Empty);
+
+                _server.Input(Commands.SaveAll);
+                _server.Input(Commands.SaveOff);
 
                 string sourceDirectory = Path.Combine(serverFolder, levelName);
                 string backupDirectory = Path.Combine(backupFolder, levelName + " - " + currentDate);
 
                 DirectoryHelper.Mirror(sourceDirectory, backupDirectory);
 
-                serverInstance.Input(Commands.SaveOn);
-                serverInstance.Display("[DevCraft]: Backup complete.");
+                _server.Input(Commands.SaveOn);
+                _server.Display("[DevCraft]: Backup complete.");
+                OnBackupCompleted(EventArgs.Empty);
             }
             catch (Exception ex)
             {
-                // TODO: lordy this is bad
-                try
-                {
-                    serverInstance.Input(Commands.SaveOn);
-                    serverInstance.Display("[DevCraft]: Backup failed: " + ex.Message);
-                }
-                catch (Exception ex2)
-                {
-                    //SetText("[DevCraft]: Unable to back up world: " + ex2.Message);
-                }
+                _server.Input(Commands.SaveOn);
+                _server.Display("[DevCraft]: Backup failed: " + ex.Message);
+                OnBackupFailed(EventArgs.Empty);
             }
             finally
             {
@@ -76,24 +75,51 @@ namespace DevCraft.Core.Backup
             }
         }
 
-        public static void InitializeBackups(ISchedule schedule, IServerInstance server)
+        public void InitializeBackups(ISchedule schedule)
         {
-            _server = server;
-
             double offset;
-
             double backupInterval = schedule.GetInterval(out offset);
 
             _backupTimer = new DelayedTimer(offset, backupInterval);
-
             _backupTimer.Elapsed += BackupFired;
-
             _backupTimer.Start();
         }
 
-        private static void BackupFired(Object source, ElapsedEventArgs e)
+        private void OnBackupStarting(EventArgs e)
         {
-            Backup(_server);
+            if (BackupStarting != null)
+            {
+                BackupStarting(this, e);
+            }
+        }
+
+        private void OnBackupCompleted(EventArgs e)
+        {
+            if (BackupCompleted != null)
+            {
+                BackupCompleted(this, e);
+            }
+        }
+
+        private void OnBackupFailed(EventArgs e)
+        {
+            if (BackupFailed != null)
+            {
+                BackupFailed(this, e);
+            }
+        }
+
+        private void BackupFired(object source, ElapsedEventArgs e)
+        {
+            Backup();
+        }
+
+        private void RemoveOldBackups_Worker(object o)
+        {
+            var backupDef = (BackupRemovalDefinition)o;
+            var daysToKeep = DateTime.Now.Subtract(TimeSpan.FromDays(backupDef.DaysToKeep));
+
+            DirectoryHelper.DeleteBefore(backupDef.BackupsPath, daysToKeep);
         }
     }
 }
